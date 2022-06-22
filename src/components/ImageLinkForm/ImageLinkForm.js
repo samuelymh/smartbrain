@@ -3,7 +3,7 @@ import './ImageLinkForm.css';
 
 const ImageLinkForm = () => {
     return (
-        <div>
+        <div className='ml3 mr3'>
             <p className="f3">
                 SmartBrain will detect faces in your image links.
             </p>    
