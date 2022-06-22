@@ -1,4 +1,5 @@
 import './App.css';
+import { Component } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import Navigation from './components/Navigation/Navigation';
@@ -63,30 +64,48 @@ const particlesOptions = {
   },
 }
 
-function App() {
-  const particlesInit = async (main) => {
-    console.log(main);
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      input: '',
+    }
+  }
 
-    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
-    await loadFull(main);
-  };
+  onInputChange = (event) => {
+    // event.target.value = the text inside input box
+    console.log(event.target.value);
+  }
 
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
+  onButtonSubmit = () => {
+    console.log('click');
+  }
 
-  return (
-    <div className="App">
-      <Particles id='tsparticles' init={particlesInit} loaded={particlesLoaded} options={particlesOptions}/>
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm />
-      {/* <FaceRecognition /> */}
-    </div>
-  );
+  render() {
+    const particlesInit = async (main) => {
+      console.log(main);
+  
+      // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
+      // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+      // starting from v2 you can add only the features you need reducing the bundle size
+      await loadFull(main);
+    };
+  
+    const particlesLoaded = (container) => {
+      console.log(container);
+    };
+
+    return (
+      <div className="App">
+        <Particles id='tsparticles' init={particlesInit} loaded={particlesLoaded} options={particlesOptions} />
+        <Navigation />
+        <Logo />
+        <Rank />
+        <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
+        {/* <FaceRecognition /> */}
+      </div>
+    );
+  }
 }
 
 export default App;
