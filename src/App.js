@@ -48,7 +48,7 @@ const particlesOptions = {
         default: "bounce",
       },
       random: false,
-      speed: 5.5, // Controls speed of circles.
+      speed: 1.5, // Controls speed of circles.
       straight: false,
     },
     number: {
