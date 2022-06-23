@@ -76,27 +76,42 @@ class App extends Component {
     this.state = {
       input: '',
       imageUrl: '',
-      box: {}
+      boxArray: []
     }
   }
+  
+  extractFaceLocations = (data) => {
+    console.log("Response:", data);
 
-  calculateFaceLocation = (data) => {
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    // data.outputs[0].data.regions is an array object of faces
+    // clarifaiFaces is an array of bounding boxes of faces
+    const clarifaiFaces = data
+      .outputs[0]
+      .data.regions
+      .map(face => face.region_info.bounding_box);
+
+    return clarifaiFaces;
+  }
+
+  calculateFaceLocations = (faces) => {
+    // To get relative width and height of input image in browser
     const image = document.getElementById('inputimage');
     const width = Number(image.width);
     const height = Number(image.height);
 
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - (clarifaiFace.right_col * width),
-      bottomRow: height - (clarifaiFace.bottom_row * height)
-    }
-  }
+    // Iterates over an array of objects of bounding boxes.
+    // Then calculates the bounding boxes relative to the width and height.
+    const faceLocations = faces.map(face => {
+      return {
+        leftCol: face.left_col * width,
+        topRow: face.top_row * height,
+        rightCol: width - (face.right_col * width),
+        bottomRow: height - (face.bottom_row * height)
+      }
+    });
 
-  displayFaceBox = (box) => {
-    console.log("Box", box);
-    this.setState({box: box});
+    // setState is asynchronous and by default renders the respective component that state is in.
+    this.setState({boxArray: faceLocations});
   }
 
   onInputChange = (event) => {
@@ -107,9 +122,12 @@ class App extends Component {
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});
 
+    // Sends url via clarifai api to detect faces.
+    // extractFaceLocations extracts and returns the bounding boxes array nested in response
+    // calculateFaceLocations sets state of boxArray to be passed into FaceRecognition component.
     app.models
       .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-      .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
+      .then(response => this.calculateFaceLocations(this.extractFaceLocations(response)))
       .catch(err => console.log(err));
   }
 
@@ -134,7 +152,7 @@ class App extends Component {
         <Logo />
         <Rank />
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
-        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
+        <FaceRecognition boxArray={this.state.boxArray} imageUrl={this.state.imageUrl}/>
       </div>
     );
   }
