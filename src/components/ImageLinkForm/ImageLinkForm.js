@@ -5,7 +5,8 @@ const ImageLinkForm = ({ onInputChange, onButtonSubmit }) => {
     return (
         <div className='ml3 mr3'>
             <p className="f3">
-                SmartBrain will detect faces in your image links.
+                SmartBrain will detect faces in your image. Please provide a direct image link to a file
+                on the web.
             </p>    
             <div className='center'>
                 <div className='form center pa4 br3 shadow-5'>
