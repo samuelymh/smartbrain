@@ -92,7 +92,24 @@ class App extends Component {
     // calculateFaceLocations sets state of boxArray to be passed into FaceRecognition component.
     app.models
       .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-      .then(response => this.calculateFaceLocations(this.extractFaceLocations(response)))
+      .then(response => {
+        if(response){
+          fetch('http://localhost:3001/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: this.state.user.id
+            })
+          })
+            .then(response => response.json())
+            .then(count => {
+              // Cant do setState({user:{entries: count}}) otherwise it just
+              // rewrites the whole thing and user wont have the other props anymore.
+              this.setState(Object.assign(this.state.user, {entries: count}))
+            })
+        }
+        this.calculateFaceLocations(this.extractFaceLocations(response))
+      })
       .catch(err => console.log(err));
   }
 
