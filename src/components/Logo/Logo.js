@@ -5,12 +5,12 @@ import './Logo.css';
 
 class Logo extends Component {
     shouldComponentUpdate(){
-        console.log("Logo - shouldComponentUpdate lifecycle")
+        // console.log("Logo - shouldComponentUpdate lifecycle")
         return false;
     }
 
     render(){
-        console.log("Logo - Render lifecycle")
+        // console.log("Logo - Render lifecycle")
 
         return (
             <div className="ma4 mt0">
