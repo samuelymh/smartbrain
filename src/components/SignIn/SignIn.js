@@ -1,4 +1,3 @@
-import userEvent from '@testing-library/user-event';
 import React, { Component } from 'react';
 
 class SignIn extends Component {
