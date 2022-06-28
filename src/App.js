@@ -14,23 +14,25 @@ const app = new Clarifai.App({
   apiKey: '19c9234fd2f54ca6b0c9d047d683d9a8'
 });
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  boxArray: [],
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 class App extends Component {
   constructor(){
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      boxArray: [],
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
   loadUser = (data) => {
@@ -108,6 +110,8 @@ class App extends Component {
               // rewrites the whole thing and user wont have the other props anymore.
               this.setState(Object.assign(this.state.user, {entries: count}))
             })
+            .catch(console.log);
+            // Always best to add a catch after thens for good error handling.
         }
         this.calculateFaceLocations(this.extractFaceLocations(response))
       })
@@ -116,7 +120,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if(route === 'signout'){
-      this.setState({isSignedIn: false});
+      this.setState(initialState);
     } else if(route === 'home'){
       this.setState({isSignedIn: true})
     }
