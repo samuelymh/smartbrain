@@ -1,6 +1,5 @@
 import './App.css';
 import { Component } from 'react';
-import Clarifai from 'clarifai';
 import ParticlesWrapper from './components/ParticlesWrapper/ParticlesWrapper';
 import Navigation from './components/Navigation/Navigation';
 import SignIn from './components/SignIn/SignIn';
