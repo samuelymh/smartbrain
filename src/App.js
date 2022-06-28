@@ -35,6 +35,7 @@ class App extends Component {
 
   loadUser = (data) => {
     this.setState({
+      imageUrl: '',
       user : {
         id: data.id,
         name: data.name,
