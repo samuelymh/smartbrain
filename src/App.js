@@ -10,10 +10,6 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Rank from './components/Rank/Rank';
 
-const app = new Clarifai.App({
-  apiKey: '19c9234fd2f54ca6b0c9d047d683d9a8'
-});
-
 const initialState = {
   input: '',
   imageUrl: '',
@@ -93,29 +89,35 @@ class App extends Component {
     // Sends url via clarifai api to detect faces.
     // extractFaceLocations extracts and returns the bounding boxes array nested in response
     // calculateFaceLocations sets state of boxArray to be passed into FaceRecognition component.
-    app.models
-      .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-      .then(response => {
-        if(response){
-          fetch('http://localhost:3001/image', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              id: this.state.user.id
-            })
-          })
-            .then(response => response.json())
-            .then(count => {
-              // Cant do setState({user:{entries: count}}) otherwise it just
-              // rewrites the whole thing and user wont have the other props anymore.
-              this.setState(Object.assign(this.state.user, {entries: count}))
-            })
-            .catch(console.log);
-            // Always best to add a catch after thens for good error handling.
-        }
-        this.calculateFaceLocations(this.extractFaceLocations(response))
+    fetch('http://localhost:3001/imageurl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
       })
-      .catch(err => console.log(err));
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response){
+        fetch('http://localhost:3001/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            id: this.state.user.id
+          })
+        })
+          .then(response => response.json())
+          .then(count => {
+            // Cant do setState({user:{entries: count}}) otherwise it just
+            // rewrites the whole thing and user wont have the other props anymore.
+            this.setState(Object.assign(this.state.user, {entries: count}))
+          })
+          .catch(console.log);
+          // Always best to add a catch after thens for good error handling.
+      }
+      this.calculateFaceLocations(this.extractFaceLocations(response))
+    })
+    .catch(err => console.log(err));
   }
 
   onRouteChange = (route) => {
