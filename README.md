@@ -2,6 +2,10 @@
 
 This project is currently deployed on [heroku.](https://smartbrain-demo.herokuapp.com/)
 
+### Login Credentials
+email   : demo@demo.com
+password: demo
+
 ### Learning outcomes of project.
 1. Modularisation of application using different files for components.
 2. How to request data from a server using designated API.
