@@ -1,6 +1,6 @@
 # Smartbrain app
 
-This project is currently hosted on [heroku.](https://smartbrain-demo.herokuapp.com/)
+This project is currently deployed on [heroku.](https://smartbrain-demo.herokuapp.com/)
 
 ### Learning outcomes of project.
 1. Modularisation of application using different files for components.
