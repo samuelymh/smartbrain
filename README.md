@@ -4,6 +4,7 @@ This project is currently deployed on [heroku.](https://smartbrain-demo.herokuap
 
 ### Login Credentials
 email   : demo@demo.com
+
 password: demo
 
 ### Learning outcomes of project.
